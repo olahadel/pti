@@ -170,5 +170,3 @@ public class RSA {
         return decrypted;
     }
 }
-
-//kiterjesztett euklideszi, kinai, csak saját fv-ek, lecsekkolni jók e az algoritmusok
