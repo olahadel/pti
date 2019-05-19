@@ -56,20 +56,24 @@ public class Main {
         //titkosithato uzenetek halmaza: {0, ... , n-1 )
         Scanner reader = new Scanner(System.in);
 
-        System.out.println("\nTitkosítandó Üzenet: ");
+        String in;
 
-        String in = reader.next();
+        do {
+            System.out.print("\nTitkosítandó üzenet: ");
+            in = reader.next();
 
-        BigInteger msg = BigInteger.valueOf(Integer.parseInt(in));
+            BigInteger msg = BigInteger.valueOf(Integer.parseInt(in));
 
-        //encryption
-        BigInteger encrypted = rsa.QuickPow(msg, e, n);
+            //encryption
+            BigInteger crypted = rsa.QuickPow(msg, e, n);
 
-        //decryption
-        BigInteger decrypted = rsa.QuickPow(encrypted, d, n);
+            //decryption
+            BigInteger decrypted = rsa.Decrypt(p, q, crypted, d);
 
-        System.out.println("Titkosított üzenet: " + encrypted);
-        System.out.println("Visszafejtett üzenet: " + decrypted);
+            System.out.println("Titkosított üzenet: " + crypted);
+            System.out.println("Visszafejtett üzenet: " + decrypted);
+        }
+        while (Integer.parseInt(in) > 0);
 
         /*
         //test euclid_algorithm

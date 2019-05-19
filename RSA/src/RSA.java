@@ -98,6 +98,8 @@ public class RSA {
         BigInteger x_newcol = x_divisor.multiply(quotient).add(x_dividend);
         BigInteger y_newcol = y_divisor.multiply(quotient).add(y_dividend);
 
+        int counter = 2;
+
         while (remainder != BigInteger.ZERO) {
             dividend = divisor;    //osztando
             divisor = remainder;     //oszto
@@ -109,10 +111,12 @@ public class RSA {
             y_divisor = y_newcol;
             x_newcol = x_divisor.multiply(quotient).add(x_dividend);
             y_newcol = y_divisor.multiply(quotient).add(y_dividend);
+
+            counter++;
         }
 
         //x = x_divisor, y = y_divisor
-        BigInteger[] result = {divisor, y_divisor};
+        BigInteger[] result = {divisor, y_divisor, x_divisor, BigInteger.valueOf(counter)};
         return result;
     }
 
@@ -143,6 +147,27 @@ public class RSA {
         }
 
         return modsmultiply.mod(modulo);
+    }
+
+    public static BigInteger Decrypt(@NotNull BigInteger p, @NotNull BigInteger q, BigInteger crypted, @NotNull BigInteger d) {
+        BigInteger c1 = QuickPow(crypted, d.mod(p.subtract(BigInteger.ONE)), p);
+        BigInteger c2 = QuickPow(crypted, d.mod(q.subtract(BigInteger.ONE)), q);
+
+        BigInteger M = p.multiply(q);
+        BigInteger M1 = q;
+        BigInteger M2 = p;
+
+        BigInteger y1 = BigInteger.ONE.negate().pow(Euclid_algorithm(p, q)[3].intValue() - 1).multiply(Euclid_algorithm(p, q)[2]);  // (-1)^counter * x_divisor
+        BigInteger y2 = BigInteger.ONE.negate().pow(Euclid_algorithm(p, q)[3].intValue()).multiply(Euclid_algorithm(p, q)[1]);
+
+        if (y1.multiply(M1).mod(p).compareTo(BigInteger.ONE) != 0) {    //y1*M1 = 1 (mod p)
+            BigInteger h = y1;
+            y1 = y2;
+            y2 = y1;
+        }
+
+        BigInteger decrypted = (c1.multiply(y1).multiply(M1).add(c2.multiply(y2).multiply(M2))).mod(M);
+        return decrypted;
     }
 }
 
