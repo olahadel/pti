@@ -77,6 +77,20 @@ public class RSA {
         }
     }
 
+    public BigInteger searchForD(BigInteger phi_n, BigInteger e){
+        BigInteger d = BigInteger.ONE;
+
+        //amig e*d (mod phi(n)) !=1 && d!=phi(n)
+        while((e.multiply(d).mod(phi_n).compareTo(BigInteger.ONE) !=0 && d.compareTo(phi_n) != 0)){
+            d = d.add(BigInteger.ONE);
+            if (d.compareTo(e) == 0) {
+                d = d.add(BigInteger.ONE);
+            }
+        }
+
+        return d;
+    }
+
     public static BigInteger[] Euclid_algorithm (@NotNull BigInteger a, BigInteger b) {
         BigInteger dividend = BigInteger.ONE;
         BigInteger divisor = BigInteger.ONE;
@@ -115,8 +129,11 @@ public class RSA {
             counter++;
         }
 
+        BigInteger x = x_divisor.multiply(BigInteger.ONE.negate().pow(counter - 1));
+        BigInteger y = y_divisor.multiply(BigInteger.ONE.negate().pow(counter));
+
         //x = x_divisor, y = y_divisor
-        BigInteger[] result = {divisor, y_divisor, x_divisor, BigInteger.valueOf(counter)};
+        BigInteger[] result = {divisor, y, x};
         return result;
     }
 
@@ -157,13 +174,31 @@ public class RSA {
         BigInteger M1 = q;
         BigInteger M2 = p;
 
-        BigInteger y1 = BigInteger.ONE.negate().pow(Euclid_algorithm(p, q)[3].intValue() - 1).multiply(Euclid_algorithm(p, q)[2]);  // (-1)^counter * x_divisor
-        BigInteger y2 = BigInteger.ONE.negate().pow(Euclid_algorithm(p, q)[3].intValue()).multiply(Euclid_algorithm(p, q)[1]);
 
-        if (y1.multiply(M1).mod(p).compareTo(BigInteger.ONE) != 0) {    //y1*M1 = 1 (mod p)
-            BigInteger h = y1;
-            y1 = y2;
-            y2 = y1;
+        BigInteger result_array[] = Euclid_algorithm(p, q);
+        BigInteger y1 = result_array[2];
+        BigInteger y2 = result_array[1];
+
+        if (y1.compareTo(BigInteger.ZERO) == -1) {   //ha x < 0
+            //ha y1 a negatív, akkor előbb y2-t helyettesítjük vissza
+            if (y2.multiply(M2).mod(q).compareTo(BigInteger.ONE) == 0) {    //y*M2 = 1 (mod q) --> y a 2. egyeletbe megy
+                y1 = p.add(result_array[2]);
+                y2 = result_array[1];
+            }
+            else {
+                y1 = result_array[1];
+                y2 = q.add(result_array[2]);
+            }
+        }
+        else {      //ha y <0
+            if (y1.multiply(M1).mod(p).compareTo(BigInteger.ONE) == 0) {    //x*M1 = 1 (mod p) --> x az 1. egyenletbe megy
+                y1 = result_array[2];
+                y2 = q.add(result_array[1]);
+            }
+            else {
+                y1 = p.add(result_array[1]);
+                y2 = result_array[2];
+            }
         }
 
         BigInteger decrypted = (c1.multiply(y1).multiply(M1).add(c2.multiply(y2).multiply(M2))).mod(M);

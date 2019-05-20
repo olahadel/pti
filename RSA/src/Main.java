@@ -26,16 +26,10 @@ public class Main {
         System.out.println("phi(n): " + phi_n + "\n");
 
         //phi(n)-hez relativ kicsi e szam
-        BigInteger e = BigInteger.valueOf(2);
+        BigInteger e = BigInteger.valueOf(3);
         System.out.println("(" + phi_n + ", " + e + "): " + rsa.Euclid_algorithm(phi_n, e)[0] + "\t" + phi_n.gcd(e));
         while ( rsa.Euclid_algorithm(phi_n, e)[0].compareTo(BigInteger.ONE) != 0 && e.compareTo(p) != 0 && e.compareTo(q) != 0) {
-            if (phi_n.mod(BigInteger.TWO) == BigInteger.ZERO) { //ha phi_n páros
-                e = e.add(BigInteger.ONE);
-            }
-            else {
-                e = e.add(BigInteger.TWO);
-            }
-
+            e = e.add(BigInteger.TWO);
             System.out.println("(" + phi_n + ", " + e + "): " + rsa.Euclid_algorithm(phi_n, e)[0] + "\t" + phi_n.gcd(e));
         }
 
@@ -46,12 +40,13 @@ public class Main {
         System.out.println("\ne: " + e);
 
         //e * d = 1 (mod phi_n)
-        BigInteger d = rsa.Euclid_algorithm(phi_n, e)[1];
+        BigInteger d = rsa.Euclid_algorithm(phi_n, e)[1];   //NEMJÓ
+        if (d.compareTo(BigInteger.ZERO) == -1) {
+            d = d.add(phi_n);
+        }
+        //BigInteger d = rsa.searchForD(phi_n, e);
         System.out.println("d: " + d);
-        //BigInteger PublicKey = rsa.Euclid_algorithm(e, n)[0];
-        //BigInteger SecretKey =  rsa.Euclid_algorithm(d, n)[0];
-        //System.out.println("\nPK: " + PublicKey + "\t" + e.gcd(n));
-        //System.out.println("SK: " + SecretKey + "\t" + d.gcd(n));
+        System.out.println("e*d (mod phi(n))= " + ((e.multiply(d).abs()).mod(phi_n)));     //0-nak kell lennie, mert e*d | phi(n)+1 -et
 
         //titkosithato uzenetek halmaza: {0, ... , n-1 )
         Scanner reader = new Scanner(System.in);
@@ -67,22 +62,29 @@ public class Main {
             //encryption
             BigInteger crypted = rsa.QuickPow(msg, e, n);
 
-            //decryption
-            BigInteger decrypted = rsa.Decrypt(p, q, crypted, d);
-
             System.out.println("Titkosított üzenet: " + crypted);
+
+            //decryption
+            //BigInteger decrypted = rsa.QuickPow(crypted, d, n);
+            //System.out.println("Visszafejtett üzenet: " + decrypted);
+            BigInteger decrypted = rsa.Decrypt(p, q, crypted, d);
             System.out.println("Visszafejtett üzenet: " + decrypted);
         }
-        while (Integer.parseInt(in) > 0);
+        while (Integer.parseInt(in) >= 0);
 
         /*
         //test euclid_algorithm
-        System.out.println("(160, 19): " + rsa.Euclid_algorithm(BigInteger.valueOf(534), BigInteger.valueOf(141))[0]);
-        System.out.println("d: " + rsa.Euclid_algorithm(BigInteger.valueOf(534), BigInteger.valueOf(141))[1]);
+        BigInteger[] results = rsa.Euclid_algorithm(BigInteger.valueOf(2340), BigInteger.valueOf(113));
+        System.out.println("LNKO: " + results[0]);
+        System.out.println("d(y): " + results[1]);
+        System.out.println("x: " + results[2]);
 
         //test quickpow
         System.out.println(rsa.QuickPow(BigInteger.valueOf(9), BigInteger.valueOf(67), BigInteger.valueOf(537)));
         System.out.println(BigInteger.valueOf(9).modPow(BigInteger.valueOf(67), BigInteger.valueOf(537)));
+
+        //test decrypt
+        System.out.println(rsa.Decrypt(BigInteger.valueOf(13), BigInteger.valueOf(5), BigInteger.valueOf(6), BigInteger.valueOf(19)));
          */
     }
 }
