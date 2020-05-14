@@ -1,0 +1,10 @@
+main\MyApplication.class
+model\WordSetDAO.class
+model\WordSet.class
+controller\ResultController.class
+controller\GameController.class
+main\Main.class
+jpa\GenericJpaDao.class
+controller\StartController.class
+model\Player.class
+model\PlayerDAO.class

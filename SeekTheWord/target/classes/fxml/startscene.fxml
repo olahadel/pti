@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="startScenePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StartController">
+   <children>
+      <Label layoutX="123.0" layoutY="55.0" text="Seek The Word" textAlignment="CENTER">
+         <font>
+            <Font name="Bookman Old Style" size="48.0" />
+         </font>
+      </Label>
+      <Label layoutX="186.0" layoutY="176.0" text="Please enter your name for Seeking:">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="playerName" alignment="CENTER" layoutX="225.0" layoutY="207.0" promptText="Your choosen name" />
+      <Button fx:id="startButton" layoutX="231.0" layoutY="275.0" mnemonicParsing="false" onAction="#startTheGame" prefHeight="66.0" prefWidth="137.0" text="SEEK" />
+   </children>
+</Pane>
