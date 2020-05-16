@@ -8,7 +8,7 @@ public class Player {
 
     @Id
     @GeneratedValue
-    private String playerId;
+    private Integer playerId;
 
     @Column(nullable=false)
     private String playerName;
@@ -18,6 +18,20 @@ public class Player {
 
     @Column(nullable=false)
     private int score;
+
+    public Player() {}
+
+    public Player(String playerName, int gameTime, int score) {
+        this.playerName = playerName;
+        this.gameTime = gameTime;
+        this.score = score;
+    }
+
+    public String getPlayerName() { return playerName; }
+
+    public int getGameTime() { return gameTime; }
+
+    public int getScore() { return score; }
 
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
@@ -31,12 +45,5 @@ public class Player {
         this.score = score;
     }
 
-    public Player() {
-    }
 
-    public Player(String playerName, int gameTime, int score) {
-        this.playerName = playerName;
-        this.gameTime = gameTime;
-        this.score = score;
-    }
 }

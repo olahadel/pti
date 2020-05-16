@@ -30,12 +30,12 @@ public class WordSetDAO extends GenericJpaDao<WordSet> {
     */
 
     public List<String> findAllLetterSets() {
-        return entityManager.createQuery("SELECT distinct letterset FROM wordset", String.class)
+        return entityManager.createQuery("SELECT distinct letterSet FROM WordSet", String.class)
                 .getResultList();
     }
 
     public List<String> findAllWords(String letterSet) {
-        return entityManager.createQuery("SELECT possibleword FROM wordset WHERE letterset = :letterSet", String.class)
+        return entityManager.createQuery("SELECT possibleWord FROM WordSet WHERE letterset = :letterSet", String.class)
                 .setParameter("letterSet", letterSet)
                 .getResultList();
     }

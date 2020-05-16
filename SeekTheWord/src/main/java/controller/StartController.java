@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.Player;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -42,10 +41,10 @@ public class StartController {
 
     public void startTheGame(ActionEvent actionEvent) throws IOException {
         savePlayerName = String.valueOf(playerName.getText());
-        logger.log(Level.INFO, "player name: " + String.valueOf(playerName.getText()));
+        logger.log(Level.INFO, "player name: " + savePlayerName);
 
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/gamescene.fxml"));
-        logger.log(Level.INFO, "FXML loaded in");
+        logger.log(Level.INFO, "gamscene FXML loaded in");
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();

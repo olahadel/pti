@@ -3,19 +3,23 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
 <Pane fx:id="gameScenePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameController">
    <children>
-      <Button fx:id="letterButton0" layoutX="172.0" layoutY="107.0" mnemonicParsing="false" onAction="#clickOnLetter" prefHeight="70.0" prefWidth="70.0" stylesheets="@../css/Button.css" text="Button" />
-      <Label fx:id="wordForSeeking" alignment="CENTER" layoutX="100.0" layoutY="24.0" prefHeight="70.0" prefWidth="285.0" wrapText="true" />
-      <Button fx:id="letterButton1" layoutX="265.0" layoutY="107.0" mnemonicParsing="false" onAction="#clickOnLetter" prefHeight="70.0" prefWidth="70.0" stylesheets="@../css/Button.css" text="Button" />
-      <Button fx:id="letterButton6" layoutX="172.0" layoutY="278.0" mnemonicParsing="false" onAction="#clickOnLetter" prefHeight="70.0" prefWidth="70.0" stylesheets="@../css/Button.css" text="Button" />
-      <Button fx:id="letterButton3" layoutX="172.0" layoutY="192.0" mnemonicParsing="false" onAction="#clickOnLetter" prefHeight="70.0" prefWidth="70.0" stylesheets="@../css/Button.css" text="Button" />
-      <Button fx:id="letterButton2" layoutX="358.0" layoutY="107.0" mnemonicParsing="false" onAction="#clickOnLetter" prefHeight="70.0" prefWidth="70.0" stylesheets="@../css/Button.css" text="Button" />
-      <Button fx:id="letterButton4" layoutX="265.0" layoutY="192.0" mnemonicParsing="false" onAction="#clickOnLetter" prefHeight="70.0" prefWidth="70.0" stylesheets="@../css/Button.css" text="Button" />
-      <Button fx:id="letterButton7" layoutX="265.0" layoutY="278.0" mnemonicParsing="false" onAction="#clickOnLetter" prefHeight="70.0" prefWidth="70.0" stylesheets="@../css/Button.css" text="Button" />
-      <Button fx:id="letterButton5" layoutX="358.0" layoutY="192.0" mnemonicParsing="false" onAction="#clickOnLetter" prefHeight="70.0" prefWidth="70.0" stylesheets="@../css/Button.css" text="Button" />
-      <Button fx:id="letterButton8" layoutX="358.0" layoutY="278.0" mnemonicParsing="false" onAction="#clickOnLetter" prefHeight="70.0" prefWidth="70.0" stylesheets="@../css/Button.css" text="Button" />
+      <Button fx:id="letterButton0" alignment="CENTER" contentDisplay="CENTER" layoutX="174.0" layoutY="107.0" mnemonicParsing="false" onAction="#clickOnLetter" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/Button.css" text="Button" />
+      <Label fx:id="wordForSeeking" alignment="CENTER" layoutX="100.0" layoutY="24.0" prefHeight="70.0" prefWidth="285.0" wrapText="true">
+         <font>
+            <Font size="24.0" />
+         </font></Label>
+      <Button fx:id="letterButton1" alignment="CENTER" contentDisplay="CENTER" layoutX="260.0" layoutY="107.0" mnemonicParsing="false" onAction="#clickOnLetter" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/Button.css" text="Button" />
+      <Button fx:id="letterButton6" alignment="CENTER" contentDisplay="CENTER" layoutX="174.0" layoutY="278.0" mnemonicParsing="false" onAction="#clickOnLetter" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/Button.css" text="Button" />
+      <Button fx:id="letterButton3" alignment="CENTER" contentDisplay="CENTER" layoutX="174.0" layoutY="192.0" mnemonicParsing="false" onAction="#clickOnLetter" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/Button.css" text="Button" />
+      <Button fx:id="letterButton2" alignment="CENTER" contentDisplay="CENTER" layoutX="345.0" layoutY="107.0" mnemonicParsing="false" onAction="#clickOnLetter" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/Button.css" text="Button" />
+      <Button fx:id="letterButton4" alignment="CENTER" contentDisplay="CENTER" layoutX="260.0" layoutY="192.0" mnemonicParsing="false" onAction="#clickOnLetter" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/Button.css" text="Button" />
+      <Button fx:id="letterButton7" alignment="CENTER" contentDisplay="CENTER" layoutX="260.0" layoutY="278.0" mnemonicParsing="false" onAction="#clickOnLetter" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/Button.css" text="Button" />
+      <Button fx:id="letterButton5" alignment="CENTER" contentDisplay="CENTER" layoutX="345.0" layoutY="192.0" mnemonicParsing="false" onAction="#clickOnLetter" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/Button.css" text="Button" />
+      <Button fx:id="letterButton8" alignment="CENTER" contentDisplay="CENTER" layoutX="345.0" layoutY="278.0" mnemonicParsing="false" onAction="#clickOnLetter" prefHeight="80.0" prefWidth="80.0" stylesheets="@../css/Button.css" text="Button" />
       <Button fx:id="seekButton" layoutX="446.0" layoutY="35.0" mnemonicParsing="false" onAction="#seek" prefHeight="48.0" prefWidth="118.0" stylesheets="@../css/Button.css" text="SEEK" />
       <Pane fx:id="scorePane" layoutY="345.0" prefHeight="48.0" prefWidth="141.0">
          <children>
@@ -27,7 +31,7 @@
       </Pane>
       <Pane fx:id="endGamePane" layoutX="459.0" layoutY="345.0" prefHeight="48.0" prefWidth="141.0">
          <children>
-            <Button fx:id="giveUpButton" layoutX="13.0" layoutY="9.0" mnemonicParsing="false" onAction="#endGame" prefHeight="30.0" prefWidth="99.0" stylesheets="@../css/Button.css" text="GIVE UP" />
+            <Button fx:id="giveUpButton" layoutX="28.0" layoutY="9.0" mnemonicParsing="false" onAction="#endGame" prefHeight="30.0" prefWidth="99.0" stylesheets="@../css/Button.css" text="GIVE UP" />
          </children>
       </Pane>
    </children>

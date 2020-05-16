@@ -12,7 +12,6 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import model.Player;
 import model.PlayerDAO;
-import model.WordSet;
 import model.WordSetDAO;
 
 import java.io.IOException;
@@ -80,7 +79,7 @@ public class GameController {
     private long startTime;
     private long endTime;
 
-    private Player player;
+    private Player player = new Player();
     private PlayerDAO playerDAO;
     private WordSetDAO wordSetDAO;
 
@@ -97,47 +96,51 @@ public class GameController {
         letterButtonList.add(letterButton7);
         letterButtonList.add(letterButton8);
 
-        int i=0;
-        for (Button element: letterButtonList) {
-            element.setText(String.valueOf(letterSet.charAt(i++)));
-        }
-
         /* SETUP STYLES FOR FXML*/
         String style = getClass().getResource("/css/Button.css").toExternalForm();
         gameScenePane.getStylesheets().add(style);
         scorePane.getStylesheets().add(style);
         endGamePane.getStylesheets().add(style);
-        letterButtonList.stream().forEach( x -> {x.getStylesheets().add(style); x.getStyleClass().add("shiny-orange-bordered");});
+        letterButtonList.stream().forEach( x -> {
+            x.getStylesheets().add(style);
+            x.getStyleClass().clear();
+            x.getStyleClass().add("shiny-orange-bordered");});
         seekButton.getStylesheets().add(style);
         seekButton.getStyleClass().add("shiny-orange");
         giveUpButton.getStylesheets().add(style);
         giveUpButton.getStyleClass().add("shiny-orange");
 
-        /* SETUP DEFAULT SCORE */
-        //TODO set buttons, set solutionlist
-        allScore.setText(String.valueOf(wordSetList.size()));
-
-        /* SETUP TIMER */
-        startTime = System.currentTimeMillis();
-
         /* DATABASE */
-        //wordSetDAO = WordSetDAO.getInstance();
+        wordSetDAO = WordSetDAO.getInstance();
         playerDAO = PlayerDAO.getInstance();
 
-        //List<String> allLetterSets = wordSetDAO.findAllLetterSets();
+        List<String> allLetterSets = wordSetDAO.findAllLetterSets();
         Random rand = new Random();
-        //int randomNumber = rand.nextInt(allLetterSets.size() - 1);
+        int randomNumber = rand.nextInt(allLetterSets.size());
+        letterSet = allLetterSets.get(randomNumber);
 
-        //wordSetList = wordSetDAO.findAllWords(allLetterSets.get(randomNumber));
+        wordSetList = wordSetDAO.findAllWords(letterSet);
 
-        //wordForSeeking.setText(allLetterSets.get(randomNumber));
+        logger.log(Level.INFO, "LetterSet: " + letterSet + ", WordSetList size: " + wordSetList.size());
 
-        /*TRYOUT DB*/
+        /* TEST DB*//*
         Player testPlayer = new Player("testuser",30,100);
         WordSet testWordset = new WordSet("abcdefghij", "abc");
 
         playerDAO.persist(testPlayer);
-        //wordSetDAO.persist(testWordset);
+        wordSetDAO.persist(testWordset);*/
+
+        /* SETUP LETTER BUTTONS*/
+        int i=0;
+        for (Button element: letterButtonList) {
+            element.setText(String.valueOf(letterSet.charAt(i++)).toUpperCase());
+        }
+
+        /* SETUP DEFAULT SCORE */
+        allScore.setText(String.valueOf(wordSetList.size()));
+
+        /* SETUP TIMER */
+        startTime = System.currentTimeMillis();
     }
     
     public void clickOnLetter(ActionEvent actionEvent) {
@@ -164,9 +167,7 @@ public class GameController {
             int elementLastCharIndex = element.getId().length() - 1;
             int elementNumber = Character.getNumericValue(element.getId().charAt(elementLastCharIndex));
 
-            logger.log(Level.INFO, "element number: " + elementNumber + "\t" + element.isDisabled());
-
-            if (buttonNumber == elementNumber || clickedButtonList.contains(element)) {
+            if (buttonNumber == elementNumber || clickedButtonList.contains(element)) { // IF THIS IS THE CLICKED OR PREVIOUSLY CLICKED
                 continue;
             } else if (
                     buttonNumber/3 == elementNumber/3 && buttonNumber % 3  + 1 == elementNumber % 3 ||      // same row & right column
@@ -177,14 +178,21 @@ public class GameController {
                     buttonNumber/3 - 1 == elementNumber/3 && buttonNumber % 3 == elementNumber % 3 ||       // lower row & same column
                     buttonNumber/3 - 1 == elementNumber/3 && buttonNumber % 3 + 1 == elementNumber % 3 ||   // lower row & right column
                     buttonNumber/3 - 1 == elementNumber/3 && buttonNumber % 3 - 1 == elementNumber % 3) {   // lower row & left column
+                element.getStyleClass().clear();
+                element.getStyleClass().add("shiny-orange-bordered");
                 element.setDisable(false);
-            } else {
+            } else { // IF OUT OF CLOSE ENV
+                element.getStyleClass().clear();
+                element.getStyleClass().add("big-yellow");
                 element.setDisable(true);
             }
+
+            logger.log(Level.INFO, "element number: " + elementNumber + "\t" + element.isDisabled());
         }
     }
 
-    public void seek(ActionEvent actionEvent) {
+    public void seek(ActionEvent actionEvent) throws IOException {
+        word = new StringBuilder();
         clickedButtonList.clear();
 
         letterButtonList.stream().forEach( x -> {
@@ -192,8 +200,13 @@ public class GameController {
             x.getStyleClass().clear();
             x.getStyleClass().add("shiny-orange-bordered");});
 
-        if (wordSetList.contains(wordForSeeking.getText())) {
-            presentScore.setText(String.valueOf(++score));
+        if (wordSetList.contains(wordForSeeking.getText().toLowerCase())) {
+            if (wordSetList.size() == score + 1) { // ALL WORDS FOUND
+                score++;
+                giveUpButton.fire();
+            } else {
+                presentScore.setText(String.valueOf(++score));
+            }
         }
 
         wordForSeeking.setText("");
@@ -206,10 +219,10 @@ public class GameController {
         player.setGameTime(gameTime);
         player.setScore(score);
 
-        //playerDAO.persist(player);
+        playerDAO.persist(player);
 
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/resultscene.fxml"));
-        logger.log(Level.INFO, "FXML loaded in");
+        logger.log(Level.INFO, "resultscene FXML loaded in");
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
         stage.show();

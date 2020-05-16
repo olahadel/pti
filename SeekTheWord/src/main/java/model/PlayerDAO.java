@@ -15,6 +15,12 @@ public class PlayerDAO extends GenericJpaDao<Player> {
     public static PlayerDAO getInstance() {
         if (instance == null) {
             instance = new PlayerDAO();
+            /*
+            Properties props = new Properties();
+            props.load(new FileInputStream("/some/path/persistence.properties"));
+            EntityManagerFactory factory = Persistence.createEntityManagerFactory("appName", props);
+
+             */
             instance.setEntityManager(Persistence.createEntityManagerFactory("seektheword-mysql").createEntityManager());
         }
         return instance;
