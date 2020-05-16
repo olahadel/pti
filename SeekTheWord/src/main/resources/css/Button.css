@@ -2,8 +2,12 @@
     -fx-background-color: linear-gradient(olive, white, goldenrod);
 }
 
-#scorePane, #timePane, #wordForSeeking, #resultPane, #allPossibleWordsLabel {
+#scorePane, #timePane, #wordForSeeking, #resultPane, #allPossibleWordsLabel, #allPossibleWordList1, #allPossibleWordList2 {
     -fx-background-color: bisque;
+}
+
+#allPossibleWordList1, #allPossibleWordList2, #allPossibleWordList3, #allPossibleWordList4, #allPossibleWordList5, #allPossibleWordList6 {
+    -fx-background-color: beige;
 }
 
 #allPossibleWordList {
